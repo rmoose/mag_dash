@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
     updateTimeAndDate();
 
     // Fetch weather data
-    const weatherApiKey = '8f1b49544094a0c8fb11234fe2d545eb';
+    const weatherApiKey = '8f1b49544094a0c8fb11234fe2d545eb'; // Your OpenWeatherMap API Key
     const city = 'Philadelphia';
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${weatherApiKey}`)
         .then(response => {
@@ -19,10 +19,31 @@ document.addEventListener("DOMContentLoaded", function() {
             return response.json();
         })
         .then(data => {
-            console.log(data); // Log weather data to check if it's received correctly
             document.getElementById('weather').innerText = `Temperature: ${data.main.temp}°C`;
         })
         .catch(error => {
             console.error('Error fetching weather data:', error);
+        });
+
+    // Fetch Google Calendar events with API key
+    const apiKey = 'AIzaSyA0UN453NiPq7-l4qsx4WkouP4N7v89Ejo'; // Your Google API Key
+    const calendarId = 'primary'; // Your Calendar ID (usually 'primary' for primary calendar)
+    fetch(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch calendar events');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const eventsList = document.getElementById('events');
+            data.items.slice(0, 5).forEach(event => {
+                const listItem = document.createElement('li');
+                listItem.innerText = `${event.start.dateTime || event.start.date} - ${event.summary}`;
+                eventsList.appendChild(listItem);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching calendar events:', error);
         });
 });
