@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
             return response.json();
         })
         .then(data => {
-            document.getElementById('weather').innerText = `Temperature: ${data.main.temp}°C`;
+            document.getElementById('weather').innerText = `Temperature: ${data.main.temp.toFixed(1)}°C`; // Rounded to 1 decimal place
         })
         .catch(error => {
             console.error('Error fetching weather data:', error);
