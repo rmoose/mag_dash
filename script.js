@@ -27,8 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Fetch Google Calendar events with API key
     const apiKey = 'AIzaSyA0UN453NiPq7-l4qsx4WkouP4N7v89Ejo'; // Your Google API Key
-    const calendarId = 'primary'; // Your Calendar ID (usually 'primary' for primary calendar)
-    fetch(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}`)
+    fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?key=${apiKey}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to fetch calendar events');
@@ -37,6 +36,7 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(data => {
             const eventsList = document.getElementById('events');
+            eventsList.innerHTML = ''; // Clear existing list
             data.items.slice(0, 5).forEach(event => {
                 const listItem = document.createElement('li');
                 listItem.innerText = `${event.start.dateTime || event.start.date} - ${event.summary}`;
