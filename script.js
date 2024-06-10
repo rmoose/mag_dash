@@ -27,7 +27,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Fetch Google Calendar events with API key
     const apiKey = 'AIzaSyA0UN453NiPq7-l4qsx4WkouP4N7v89Ejo'; // Your Google API Key
-    fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?key=${apiKey}`)
+    const calendarId = 'ryan.musso94@gmail.com'; // Your Calendar ID
+    fetch(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to fetch calendar events');
