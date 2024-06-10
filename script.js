@@ -12,23 +12,17 @@ document.addEventListener("DOMContentLoaded", function() {
     const weatherApiKey = '8f1b49544094a0c8fb11234fe2d545eb';
     const city = 'Philadelphia';
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${weatherApiKey}`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch weather data');
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log(data); // Log weather data to check if it's received correctly
             document.getElementById('weather').innerText = `Temperature: ${data.main.temp}°C`;
-        });
-
-    // Fetch Google Calendar events
-    // Replace 'your_google_calendar_api_key' and 'your_calendar_id' with your actual values
-    const calendarApiKey = 'your_google_calendar_api_key';
-    const calendarId = 'your_calendar_id';
-    fetch(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${calendarApiKey}`)
-        .then(response => response.json())
-        .then(data => {
-            const eventsList = document.getElementById('events');
-            data.items.forEach(event => {
-                const listItem = document.createElement('li');
-                listItem.innerText = `${event.start.dateTime || event.start.date} - ${event.summary}`;
-                eventsList.appendChild(listItem);
-            });
+        })
+        .catch(error => {
+            console.error('Error fetching weather data:', error);
         });
 });
